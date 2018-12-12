@@ -55,11 +55,8 @@ final class PhotosViewController : UICollectionViewController {
     @objc var cancelBarButton: UIBarButtonItem?
     @objc var albumTitleView: UIButton?
     
-    @objc let expandAnimator = ZoomAnimator()
-    @objc let shrinkAnimator = ZoomAnimator()
-    
-    fileprivate var photosDataSource: PhotoCollectionViewDataSource?
-    fileprivate var albumsDataSource: AlbumTableViewDataSource
+    var photosDataSource: PhotoCollectionViewDataSource?
+    var albumsDataSource: AlbumTableViewDataSource
     fileprivate let cameraDataSource: CameraCollectionViewDataSource
     fileprivate var composedDataSource: ComposedCollectionViewDataSource?
     
@@ -127,14 +124,6 @@ final class PhotosViewController : UICollectionViewController {
             collectionView?.reloadData()
         }
         
-        // Add long press recognizer
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(PhotosViewController.collectionViewLongPressed(_:)))
-        longPressRecognizer.minimumPressDuration = 0.5
-        collectionView?.addGestureRecognizer(longPressRecognizer)
-        
-        // Set navigation controller delegate
-        navigationController?.delegate = self
-        
         // Register cells
         photosDataSource?.registerCellIdentifiersForCollectionView(collectionView)
         cameraDataSource.registerCellIdentifiersForCollectionView(collectionView)
@@ -187,45 +176,6 @@ final class PhotosViewController : UICollectionViewController {
         albumsViewController.tableView.reloadData()
         
         present(albumsViewController, animated: true, completion: nil)
-    }
-    
-    @objc func collectionViewLongPressed(_ sender: UIGestureRecognizer) {
-        if sender.state == .began {
-            // Disable recognizer while we are figuring out location and pushing preview
-            sender.isEnabled = false
-            collectionView?.isUserInteractionEnabled = false
-            
-            // Calculate which index path long press came from
-            let location = sender.location(in: collectionView)
-            let indexPath = collectionView?.indexPathForItem(at: location)
-            
-            if let vc = previewViewContoller, let indexPath = indexPath, let cell = collectionView?.cellForItem(at: indexPath) as? PhotoCell, let asset = cell.asset {
-                // Setup fetch options to be synchronous
-                let options = PHImageRequestOptions()
-                options.isSynchronous = true
-                
-                // Load image for preview
-                if let imageView = vc.imageView {
-                    PHCachingImageManager.default().requestImage(for: asset, targetSize:imageView.frame.size, contentMode: .aspectFit, options: options) { (result, _) in
-                        imageView.image = result
-                    }
-                }
-                
-                // Setup animation
-                expandAnimator.sourceImageView = cell.imageView
-                expandAnimator.destinationImageView = vc.imageView
-                shrinkAnimator.sourceImageView = vc.imageView
-                shrinkAnimator.destinationImageView = cell.imageView
-                
-                navigationController?.pushViewController(vc, animated: true)
-            }
-            
-            // Re-enable recognizer, after animation is done
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(expandAnimator.transitionDuration(using: nil) * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: { () -> Void in
-                sender.isEnabled = true
-                self.collectionView?.isUserInteractionEnabled = true
-            })
-        }
     }
     
     // MARK: Private helper methods
@@ -290,7 +240,6 @@ extension PhotosViewController {
             let cameraController = UIImagePickerController()
             cameraController.allowsEditing = false
             cameraController.sourceType = .camera
-            cameraController.delegate = self
             
             self.present(cameraController, animated: true, completion: nil)
             
@@ -381,16 +330,6 @@ extension PhotosViewController: UIPopoverPresentationControllerDelegate {
     
     func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
         return true
-    }
-}
-// MARK: UINavigationControllerDelegate
-extension PhotosViewController: UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if operation == .push {
-            return expandAnimator
-        } else {
-            return shrinkAnimator
-        }
     }
 }
 
