@@ -23,6 +23,8 @@
 import UIKit
 import Photos
 import BSGridCollectionViewLayout
+import SnapKit
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -104,6 +106,7 @@ final class PhotosViewController : UICollectionViewController {
         // Setup collection view
         collectionView?.backgroundColor = settings.backgroundColor
         collectionView?.allowsMultipleSelection = true
+        collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
         
         // Set an empty title to get < back button
         title = " "
@@ -127,6 +130,83 @@ final class PhotosViewController : UICollectionViewController {
         // Register cells
         photosDataSource?.registerCellIdentifiersForCollectionView(collectionView)
         cameraDataSource.registerCellIdentifiersForCollectionView(collectionView)
+
+        setupButtons()
+    }
+
+    private func setupButtons() {
+        let addButton = UIButton()
+        addButton.setTitle("Add", for: .normal)
+        addButton.setTitleColor(.blue, for: .normal)
+        self.view.addSubview(addButton)
+
+        addButton.snp.makeConstraints { (make) in
+            make.top.equalTo(0)
+            make.right.equalTo(-16)
+            make.height.equalTo(50)
+            make.width.equalTo(75)
+        }
+
+        addButton.addControlEvent(.touchUpInside) {
+
+        }
+
+        // toolbar
+        let toolbar = UIView()
+        toolbar.backgroundColor = settings.backgroundColor
+        self.view.addSubview(toolbar)
+
+        toolbar.snp.makeConstraints { (make) in
+            make.left.bottom.right.equalTo(0)
+            make.height.equalTo(60)
+        }
+
+        let clearButton = UIButton()
+        clearButton.setTitle("Clear", for: .normal)
+        clearButton.setTitleColor(.blue, for: .normal)
+        self.view.addSubview(clearButton)
+
+        clearButton.snp.makeConstraints { (make) in
+            make.left.equalTo(0)
+            make.height.equalTo(50)
+            make.width.equalTo(75)
+            make.centerY.equalToSuperview()
+        }
+
+        clearButton.addControlEvent(.touchUpInside) {
+
+        }
+
+        let albumsButton = UIButton()
+        albumsButton.setTitle("Albums ^", for: .normal)
+        albumsButton.setTitleColor(.blue, for: .normal)
+        self.view.addSubview(albumsButton)
+
+        albumsButton.snp.makeConstraints { (make) in
+            make.left.right.equalTo(16)
+            make.height.equalTo(50)
+            make.centerX.equalToSuperview().offset(-16)
+            make.centerY.equalToSuperview()
+        }
+
+        albumsButton.addControlEvent(.touchUpInside) {
+
+        }
+
+        let selectButton = UIButton()
+        selectButton.setTitle("Select all", for: .normal)
+        selectButton.setTitleColor(.blue, for: .normal)
+        self.view.addSubview(selectButton)
+        selectButton.addControlEvent(.touchUpInside) {
+
+        }
+
+        selectButton.snp.makeConstraints { (make) in
+            make.right.equalTo(-16)
+            make.height.equalTo(50)
+            make.width.equalTo(75)
+            make.centerY.equalToSuperview()
+        }
     }
     
     // MARK: Appear/Disappear
