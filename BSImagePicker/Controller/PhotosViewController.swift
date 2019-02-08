@@ -68,13 +68,14 @@ final class PhotosViewController : UICollectionViewController {
     
     fileprivate let doneBarButtonTitle: String = NSLocalizedString("Done", comment: "Done")
     
-    @objc lazy var albumsViewController: AlbumsViewController = {
+    lazy var albumsViewControllers: (AlbumsViewController, UINavigationController) = {
         let storyboard = UIStoryboard(name: "Albums", bundle: BSImagePickerViewController.bundle)
-        let vc = storyboard.instantiateInitialViewController() as! AlbumsViewController
+        let nav = storyboard.instantiateInitialViewController() as! UINavigationController
+        let vc = nav.viewControllers.first! as! AlbumsViewController
         vc.tableView.dataSource = self.albumsDataSource
         vc.tableView.delegate = self
         
-        return vc
+        return (vc, nav)
     }()
     
     fileprivate lazy var previewViewContoller: PreviewViewController? = {
@@ -136,20 +137,18 @@ final class PhotosViewController : UICollectionViewController {
 
     private func setupButtons() {
         let addButton = UIButton()
-        addButton.setTitle("Add", for: .normal)
+        addButton.setTitle(ConstString.libraryScreenAddButtonTitle.localized(), for: .normal)
         addButton.setTitleColor(.blue, for: .normal)
         self.view.addSubview(addButton)
 
         addButton.snp.makeConstraints { (make) in
             make.top.equalTo(0)
-            make.right.equalTo(-16)
+            make.right.equalTo(0)
             make.height.equalTo(50)
             make.width.equalTo(75)
         }
 
-        addButton.addControlEvent(.touchUpInside) {
-
-        }
+        addButton.addTarget(self, action: #selector(doneButtonPressed(_:)), for: .touchUpInside)
 
         // toolbar
         let toolbar = UIView()
@@ -162,9 +161,9 @@ final class PhotosViewController : UICollectionViewController {
         }
 
         let clearButton = UIButton()
-        clearButton.setTitle("Clear", for: .normal)
+        clearButton.setTitle(ConstString.libraryScreenClearButtonTitle.localized(), for: .normal)
         clearButton.setTitleColor(.blue, for: .normal)
-        self.view.addSubview(clearButton)
+        toolbar.addSubview(clearButton)
 
         clearButton.snp.makeConstraints { (make) in
             make.left.equalTo(0)
@@ -173,32 +172,42 @@ final class PhotosViewController : UICollectionViewController {
             make.centerY.equalToSuperview()
         }
 
-        clearButton.addControlEvent(.touchUpInside) {
-
+        clearButton.addControlEvent(.touchUpInside) { [unowned self] in
+            self.photosDataSource?.selections = []
+            self.collectionView.reloadData()
         }
 
         let albumsButton = UIButton()
         albumsButton.setTitle("Albums ^", for: .normal)
         albumsButton.setTitleColor(.blue, for: .normal)
-        self.view.addSubview(albumsButton)
+        toolbar.addSubview(albumsButton)
 
         albumsButton.snp.makeConstraints { (make) in
-            make.left.right.equalTo(16)
+            make.width.equalTo(150)
             make.height.equalTo(50)
             make.centerX.equalToSuperview().offset(-16)
             make.centerY.equalToSuperview()
         }
 
-        albumsButton.addControlEvent(.touchUpInside) {
-
-        }
+        albumsButton.addTarget(self, action: #selector(albumButtonPressed(_:)), for: .touchUpInside)
 
         let selectButton = UIButton()
-        selectButton.setTitle("Select all", for: .normal)
+        selectButton.setTitle(ConstString.libraryScreenSelectAllButtonTitle.localized(), for: .normal)
         selectButton.setTitleColor(.blue, for: .normal)
-        self.view.addSubview(selectButton)
-        selectButton.addControlEvent(.touchUpInside) {
+        toolbar.addSubview(selectButton)
 
+        selectButton.addControlEvent(.touchUpInside) { [unowned self] in
+            guard let source = self.photosDataSource else { return }
+
+            // make sure current selections stay ahead of the order
+            var selections: [PHAsset] = source.selections
+            source.fetchResult.enumerateObjects({ asset, _, _ in
+                if !selections.contains(asset) {
+                    selections.append(asset)
+                }
+            })
+            source.selections = selections
+            self.collectionView.reloadData()
         }
 
         selectButton.snp.makeConstraints { (make) in
@@ -239,23 +248,13 @@ final class PhotosViewController : UICollectionViewController {
             closure(photosDataSource.selections)
         }
         
-        dismiss(animated: true, completion: nil)
+        // TODO: scroll back over to camera view
     }
     
     @objc func albumButtonPressed(_ sender: UIButton) {
-        guard let popVC = albumsViewController.popoverPresentationController else {
-            return
-        }
+        albumsViewControllers.0.tableView.reloadData()
         
-        popVC.permittedArrowDirections = .up
-        popVC.sourceView = sender
-        let senderRect = sender.convert(sender.frame, from: sender.superview)
-        let sourceRect = CGRect(x: senderRect.origin.x, y: senderRect.origin.y + (sender.frame.size.height / 2), width: senderRect.size.width, height: senderRect.size.height)
-        popVC.sourceRect = sourceRect
-        popVC.delegate = self
-        albumsViewController.tableView.reloadData()
-        
-        present(albumsViewController, animated: true, completion: nil)
+        present(albumsViewControllers.1, animated: true, completion: nil)
     }
     
     // MARK: Private helper methods
@@ -423,7 +422,7 @@ extension PhotosViewController: UITableViewDelegate {
         collectionView?.reloadData()
         
         // Dismiss album selection
-        albumsViewController.dismiss(animated: true, completion: nil)
+        albumsViewControllers.0.dismiss(animated: true, completion: nil)
     }
 }
 
