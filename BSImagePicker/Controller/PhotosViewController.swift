@@ -56,7 +56,10 @@ final class PhotosViewController : UICollectionViewController {
     @objc var doneBarButton: UIBarButtonItem?
     @objc var cancelBarButton: UIBarButtonItem?
     @objc var albumTitleView: UIButton?
-    
+
+    let navbar = UIView()
+    let toolbar = UIView()
+
     var photosDataSource: PhotoCollectionViewDataSource?
     var albumsDataSource: AlbumTableViewDataSource
     fileprivate let cameraDataSource: CameraCollectionViewDataSource
@@ -132,10 +135,18 @@ final class PhotosViewController : UICollectionViewController {
         photosDataSource?.registerCellIdentifiersForCollectionView(collectionView)
         cameraDataSource.registerCellIdentifiersForCollectionView(collectionView)
 
+        setupDimmableNotifications()
         setupButtons()
     }
 
     private func setupButtons() {
+        self.view.addSubview(navbar)
+
+        navbar.snp.makeConstraints { (make) in
+            make.left.top.right.equalTo(0)
+            make.height.equalTo(60)
+        }
+
         let addButton = UIButton()
         addButton.setTitle(ConstString.libraryScreenAddButtonTitle.localized(), for: .normal)
         addButton.setTitleColor(.blue, for: .normal)
@@ -148,11 +159,19 @@ final class PhotosViewController : UICollectionViewController {
             make.width.equalTo(75)
         }
 
-        addButton.addTarget(self, action: #selector(doneButtonPressed(_:)), for: .touchUpInside)
+        addButton.addControlEvent(.touchUpInside) { [unowned self] in
+            if let assets = self.photosDataSource?.selections {
+                let capture = Capture.current()
+                DispatchQueue.global(qos: .userInitiated).async {
+                    let burst = Burst(assets: assets, orientation: self.orientation, url: capture.localDirURL)
+                    burst.process()
+                    capture.bursts.insert(burst)
+                }
+            }
 
-        // toolbar
-        let toolbar = UIView()
-        toolbar.backgroundColor = settings.backgroundColor
+            // TODO: scroll over to camera
+        }
+
         self.view.addSubview(toolbar)
 
         toolbar.snp.makeConstraints { (make) in
@@ -551,4 +570,20 @@ fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [U
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
 	return input.rawValue
+}
+
+extension PhotosViewController: Rotatable {
+    var rotatableItems: [UIView] {
+        return []
+    }
+}
+
+extension PhotosViewController: Dimmable {
+
+    func setMode(dark: Bool) {
+        [self.collectionView, navbar, toolbar].forEach { view in
+            view.backgroundColor = dark ? ConstColor.defaultBackgroundDark.color() : ConstColor.defaultBackground.color()
+        }
+    }
+
 }
