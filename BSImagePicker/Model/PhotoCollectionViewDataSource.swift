@@ -104,6 +104,6 @@ final class PhotoCollectionViewDataSource : NSObject, UICollectionViewDataSource
     }
     
     @objc func registerCellIdentifiersForCollectionView(_ collectionView: UICollectionView?) {
-        collectionView?.register(UINib(nibName: "PhotoCell", bundle: BSImagePickerViewController.bundle), forCellWithReuseIdentifier: photoCellIdentifier)
+        collectionView?.register(UINib(nibName: "PhotoCell", bundle: Bundle(for: PhotosViewController.self)), forCellWithReuseIdentifier: photoCellIdentifier)
     }
 }

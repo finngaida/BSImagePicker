@@ -22,24 +22,25 @@
 
 import UIKit
 
+protocol AlbumsViewControllerDelegate: class {
+    func selectedAlbum(at index: IndexPath)
+}
+
 final class AlbumsViewController: UITableViewController {
+    weak var delegate: AlbumsViewControllerDelegate?
+
     override func loadView() {
         super.loadView()
-        
-        // Add a little bit of blur to the background
-//        let visualEffectView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: UIBlurEffect(style: .light)))
-//        visualEffectView.frame = tableView.bounds
-//        visualEffectView.autoresizingMask = [.flexibleWidth , .flexibleHeight]
-//        tableView.backgroundView = visualEffectView
-//        tableView.backgroundColor = UIColor.clear
-//
-//        modalPresentationStyle = .popover
-//        preferredContentSize = CGSize(width: 320, height: 300)
 
         self.title = ConstString.libraryScreenPickAlbumTitle.localized()
     }
 
     @IBAction func dismiss() {
+        dismiss(animated: true, completion: nil)
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        delegate?.selectedAlbum(at: indexPath)
         dismiss(animated: true, completion: nil)
     }
 }

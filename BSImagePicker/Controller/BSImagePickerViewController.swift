@@ -72,18 +72,6 @@ open class BSImagePickerViewController : UINavigationController {
     
     @objc static let bundle: Bundle = Bundle(for: PhotosViewController.self)
     
-    @objc lazy var photosViewController: PhotosViewController = {
-        let vc = PhotosViewController(fetchResults: self.fetchResults,
-                                      defaultSelections: self.defaultSelections,
-                                      settings: self.settings)
-        
-        vc.doneBarButton = self.doneButton
-        vc.cancelBarButton = self.cancelButton
-        vc.albumTitleView = self.albumTitleView
-        
-        return vc
-    }()
-    
     @objc class func authorize(_ status: PHAuthorizationStatus = PHPhotoLibrary.authorizationStatus(), fromViewController: UIViewController, completion: @escaping (_ authorized: Bool) -> Void) {
         switch status {
         case .authorized:
