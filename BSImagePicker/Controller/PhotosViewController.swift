@@ -52,6 +52,17 @@ final class PhotosViewController: UIViewController {
     @IBOutlet var navbar: UIView!
     @IBOutlet var toolbar: UIView!
     @IBOutlet var albumsButton: UIButton!
+    @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var clearButton: UIButton!
+    @IBOutlet weak var librarySwitchContainer: UIView!
+
+    var librarySwitch: CameraLibrarySwitch! {
+        didSet {
+            if !librarySwitch.allTargets.contains(self) {
+                librarySwitch.addTarget(self, action: #selector(handleLibrarySwitchTap(sender:)), for: .valueChanged)
+            }
+        }
+    }
 
     var photosDataSource: PhotoCollectionViewDataSource?
     var albumsDataSource: AlbumTableViewDataSource?
@@ -117,6 +128,17 @@ final class PhotosViewController: UIViewController {
         setupDimmableNotifications()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        librarySwitch.snp.makeConstraints { $0.edges.equalTo(0) }
+        librarySwitch.labelsContainer.snp.makeConstraints { $0.edges.equalTo(0) }
+    }
+
+    @objc func handleLibrarySwitchTap(sender: CameraLibrarySwitch) {
+        if sender.selectedIndex == 1 {
+            self.performSegue(withIdentifier: "showCamera", sender: nil)
+        }
+    }
+
     @IBAction func doneButtonPressed(_ sender: UIButton) {
         if let assets = self.photosDataSource?.selections {
             let capture = Capture.current()
@@ -126,7 +148,7 @@ final class PhotosViewController: UIViewController {
                 capture.bursts.insert(burst)
             }
         }
-        self.dismiss(animated: true, completion: nil)
+        self.performSegue(withIdentifier: "showCamera", sender: nil)
     }
 
     @IBAction func clearButtonPressed(_ sender: UIButton) {

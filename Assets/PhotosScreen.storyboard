@@ -19,49 +19,62 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqc-ch-K4m">
-                                <rect key="frame" x="0.0" y="44" width="375" height="60"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="52"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UB0-ed-KmN">
-                                        <rect key="frame" x="8" y="15" width="75" height="30"/>
+                                        <rect key="frame" x="8" y="18" width="100" height="22"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="75" id="iKF-TY-BMK"/>
-                                            <constraint firstAttribute="height" constant="30" id="kMF-U8-eDF"/>
+                                            <constraint firstAttribute="width" constant="100" id="iKF-TY-BMK"/>
+                                            <constraint firstAttribute="height" constant="22" id="kMF-U8-eDF"/>
                                         </constraints>
-                                        <state key="normal" title="Albums"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <state key="normal" title="Camera roll"/>
                                         <connections>
                                             <segue destination="g1r-IY-vmQ" kind="presentation" identifier="showAlbums" id="37f-Bk-jmL"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G5G-pn-nyy">
-                                        <rect key="frame" x="317" y="15" width="50" height="30"/>
+                                        <rect key="frame" x="317" y="18" width="50" height="22"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="2il-z3-gcz"/>
+                                            <constraint firstAttribute="height" constant="22" id="2il-z3-gcz"/>
                                             <constraint firstAttribute="width" constant="50" id="cd2-Yt-AWf"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                         <state key="normal" title="Done"/>
                                         <connections>
                                             <action selector="doneButtonPressed:" destination="nCZ-0G-Jba" eventType="touchUpInside" id="oSc-15-xoY"/>
                                         </connections>
                                     </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SKM-kx-PEH">
+                                        <rect key="frame" x="87.666666666666686" y="17" width="200" height="27"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="27" id="mYW-iD-0JM"/>
+                                            <constraint firstAttribute="width" constant="200" id="vPQ-vH-W7s"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="UB0-ed-KmN" firstAttribute="centerY" secondItem="kqc-ch-K4m" secondAttribute="centerY" id="64k-ao-pwi"/>
-                                    <constraint firstItem="G5G-pn-nyy" firstAttribute="centerY" secondItem="kqc-ch-K4m" secondAttribute="centerY" id="VkE-rg-z7X"/>
+                                    <constraint firstAttribute="bottom" secondItem="G5G-pn-nyy" secondAttribute="bottom" constant="12" id="RMr-RC-uCo"/>
+                                    <constraint firstAttribute="bottom" secondItem="UB0-ed-KmN" secondAttribute="bottom" constant="12" id="WU3-NM-RPc"/>
                                     <constraint firstAttribute="trailing" secondItem="G5G-pn-nyy" secondAttribute="trailing" constant="8" id="cbk-xw-cqC"/>
                                     <constraint firstItem="UB0-ed-KmN" firstAttribute="leading" secondItem="kqc-ch-K4m" secondAttribute="leading" constant="8" id="eUN-Nb-tbE"/>
-                                    <constraint firstAttribute="height" constant="60" id="lix-FM-x0v"/>
+                                    <constraint firstItem="SKM-kx-PEH" firstAttribute="centerX" secondItem="kqc-ch-K4m" secondAttribute="centerX" id="f6B-JV-kV8"/>
+                                    <constraint firstAttribute="bottom" secondItem="SKM-kx-PEH" secondAttribute="bottom" constant="8" id="ggD-YU-b6J"/>
+                                    <constraint firstAttribute="height" constant="52" id="lix-FM-x0v"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TqS-Df-KGW">
                                 <rect key="frame" x="0.0" y="718" width="375" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d8U-42-cBk">
-                                        <rect key="frame" x="13" y="15" width="50" height="30"/>
+                                        <rect key="frame" x="13" y="12" width="50" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="Tof-U9-YSB"/>
-                                            <constraint firstAttribute="height" constant="30" id="iKG-4d-ST3"/>
+                                            <constraint firstAttribute="height" constant="22" id="iKG-4d-ST3"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <state key="normal" title="Clear"/>
                                         <connections>
                                             <action selector="clearButtonPressed:" destination="nCZ-0G-Jba" eventType="touchUpInside" id="6On-Vg-DTY"/>
@@ -71,12 +84,12 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="d8U-42-cBk" firstAttribute="leading" secondItem="TqS-Df-KGW" secondAttribute="leading" constant="13" id="RNu-Kj-czD"/>
+                                    <constraint firstItem="d8U-42-cBk" firstAttribute="top" secondItem="TqS-Df-KGW" secondAttribute="top" constant="12" id="Rw8-ju-Ixu"/>
                                     <constraint firstAttribute="height" constant="60" id="W5n-UV-dj1"/>
-                                    <constraint firstItem="d8U-42-cBk" firstAttribute="centerY" secondItem="TqS-Df-KGW" secondAttribute="centerY" id="m7v-AX-0x2"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="weT-p8-5Bm">
-                                <rect key="frame" x="0.0" y="104" width="375" height="614"/>
+                                <rect key="frame" x="0.0" y="96" width="375" height="622"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Fzw-yT-6Wi">
                                     <size key="itemSize" width="50" height="50"/>
@@ -117,14 +130,19 @@
                     <navigationItem key="navigationItem" title="Title" id="XMb-Nc-PU0"/>
                     <connections>
                         <outlet property="albumsButton" destination="UB0-ed-KmN" id="mrQ-bq-wdD"/>
+                        <outlet property="clearButton" destination="d8U-42-cBk" id="o5Q-mZ-gWQ"/>
                         <outlet property="collectionView" destination="weT-p8-5Bm" id="jXb-BE-0yS"/>
+                        <outlet property="doneButton" destination="G5G-pn-nyy" id="luu-TI-qP9"/>
+                        <outlet property="librarySwitchContainer" destination="SKM-kx-PEH" id="lxD-ME-VGv"/>
                         <outlet property="navbar" destination="kqc-ch-K4m" id="HMg-Mo-Mi2"/>
                         <outlet property="toolbar" destination="TqS-Df-KGW" id="pm3-YC-YIS"/>
+                        <segue destination="05s-aN-JMm" kind="unwind" identifier="showCamera" customClass="CameraScreenSegue" customModule="Vibe" customModuleProvider="target" unwindAction="unwindToCameraScreenWithSegue:" id="B6d-tP-qld"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecu-mI-7DP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="05s-aN-JMm" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-993" y="176"/>
+            <point key="canvasLocation" x="-994.39999999999998" y="175.86206896551724"/>
         </scene>
         <!--Albums-->
         <scene sceneID="WBt-zp-MfB">
