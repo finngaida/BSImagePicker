@@ -197,7 +197,7 @@ extension PhotosViewController: UICollectionViewDelegate {
             let selectedIndexPaths = photosDataSource.selections.compactMap({ (asset) -> IndexPath? in
                 let index = photosDataSource.fetchResult.index(of: asset)
                 guard index != NSNotFound else { return nil }
-                return IndexPath(item: index, section: 1)
+                return IndexPath(item: index, section: 0)
             })
 
             // Reload selected cells to update their selection number
