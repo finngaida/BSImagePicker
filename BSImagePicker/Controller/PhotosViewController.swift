@@ -65,7 +65,7 @@ final class PhotosViewController: UIViewController {
 
     fileprivate lazy var settings: BSImagePickerSettings = {
         let settings = Settings()
-        settings.cellsPerRow = { _, _ in 4 }
+        settings.cellsPerRow = { _, _ in 3 }
         settings.takePhotos = false
         return settings
     }()
@@ -104,10 +104,6 @@ final class PhotosViewController: UIViewController {
         // Setup collection view
         collectionView.collectionViewLayout = GridCollectionViewLayout()
         collectionView.allowsMultipleSelection = true
-        collectionView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
-        
-        // Set an empty title to get < back button
-        title = " "
 
         if let album = albumsDataSource?.fetchResults.first?.firstObject {
             initializePhotosDataSource(album, selections: defaultSelections)
@@ -131,6 +127,11 @@ final class PhotosViewController: UIViewController {
             }
         }
         self.dismiss(animated: true, completion: nil)
+    }
+
+    @IBAction func clearButtonPressed(_ sender: UIButton) {
+        self.photosDataSource?.selections = []
+        self.collectionView.reloadData()
     }
     
     // MARK: Private helper methods
@@ -230,7 +231,7 @@ extension PhotosViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         
         if let collectionViewFlowLayout = collectionView.collectionViewLayout as? GridCollectionViewLayout {
-            let itemSpacing: CGFloat = 2.0
+            let itemSpacing: CGFloat = 6.0
             let cellsPerRow = settings.cellsPerRow(traitCollection.verticalSizeClass, traitCollection.horizontalSizeClass)
             
             collectionViewFlowLayout.itemSpacing = itemSpacing
@@ -360,7 +361,7 @@ extension PhotosViewController: Rotatable {
 extension PhotosViewController: Dimmable {
 
     func setMode(dark: Bool) {
-        [self.collectionView, navbar, toolbar].forEach { view in
+        [self.view, navbar, toolbar].forEach { view in
             view.backgroundColor = dark ? ConstColor.defaultBackgroundDark.color() : ConstColor.defaultBackground.color()
         }
     }

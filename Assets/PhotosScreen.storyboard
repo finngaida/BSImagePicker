@@ -22,9 +22,9 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UB0-ed-KmN">
-                                        <rect key="frame" x="8" y="15" width="52" height="30"/>
+                                        <rect key="frame" x="8" y="15" width="75" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="52" id="iKF-TY-BMK"/>
+                                            <constraint firstAttribute="width" constant="75" id="iKF-TY-BMK"/>
                                             <constraint firstAttribute="height" constant="30" id="kMF-U8-eDF"/>
                                         </constraints>
                                         <state key="normal" title="Albums"/>
@@ -33,10 +33,10 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G5G-pn-nyy">
-                                        <rect key="frame" x="330" y="15" width="37" height="30"/>
+                                        <rect key="frame" x="317" y="15" width="50" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="2il-z3-gcz"/>
-                                            <constraint firstAttribute="width" constant="37" id="cd2-Yt-AWf"/>
+                                            <constraint firstAttribute="width" constant="50" id="cd2-Yt-AWf"/>
                                         </constraints>
                                         <state key="normal" title="Done"/>
                                         <connections>
@@ -55,14 +55,29 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TqS-Df-KGW">
                                 <rect key="frame" x="0.0" y="718" width="375" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d8U-42-cBk">
+                                        <rect key="frame" x="13" y="15" width="50" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="Tof-U9-YSB"/>
+                                            <constraint firstAttribute="height" constant="30" id="iKG-4d-ST3"/>
+                                        </constraints>
+                                        <state key="normal" title="Clear"/>
+                                        <connections>
+                                            <action selector="clearButtonPressed:" destination="nCZ-0G-Jba" eventType="touchUpInside" id="6On-Vg-DTY"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="d8U-42-cBk" firstAttribute="leading" secondItem="TqS-Df-KGW" secondAttribute="leading" constant="13" id="RNu-Kj-czD"/>
                                     <constraint firstAttribute="height" constant="60" id="W5n-UV-dj1"/>
+                                    <constraint firstItem="d8U-42-cBk" firstAttribute="centerY" secondItem="TqS-Df-KGW" secondAttribute="centerY" id="m7v-AX-0x2"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="weT-p8-5Bm">
                                 <rect key="frame" x="0.0" y="104" width="375" height="614"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Fzw-yT-6Wi">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
